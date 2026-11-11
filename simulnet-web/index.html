@@ -38,7 +38,7 @@ p{margin:0}
 img{display:block;max-width:100%;height:auto}
 .wrap{max-width:1280px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
 .band{padding-block:clamp(72px,9vw,140px)}
-.h2{font-size:clamp(36px,4.6vw,64px);font-weight:700}
+.h2{font-size:clamp(30px,3.4vw,48px);font-weight:700}
 .lead{font-size:clamp(18px,1.5vw,21px);color:var(--muted);max-width:620px}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:8px}
 
@@ -91,22 +91,38 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 }
 
 /* ===== Hero ===== */
-.hero{padding-block:clamp(36px,5vw,72px) clamp(40px,5vw,72px)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,0.95fr) minmax(0,1.15fr);gap:clamp(24px,4vw,56px);align-items:center}
-.hero h1{font-size:clamp(52px,7vw,104px);font-weight:700;letter-spacing:-0.035em;line-height:0.94}
+/* La imagen vive en el fondo del hero, fundida con el azul de la página; responde al mouse en capas */
+.hero{position:relative;overflow:hidden;display:flex;align-items:center;min-height:min(calc(100svh - 80px),820px);padding-block:clamp(32px,4vw,56px)}
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.hero-bg .scene{position:absolute;right:-4%;top:50%;width:min(1180px,70%);margin-top:calc(min(1180px,70vw) * -0.273);will-change:transform}
+.hero-bg .scene img{width:100%;animation:float 8s ease-in-out infinite;
+  -webkit-mask-image:radial-gradient(ellipse 52% 54% at 50% 52%,#000 58%,transparent 100%);
+          mask-image:radial-gradient(ellipse 52% 54% at 50% 52%,#000 58%,transparent 100%)}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0%,rgba(8,20,41,0.88) 28%,rgba(8,20,41,0.25) 52%,transparent 70%)}
+.hero-bg canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.hero-bg .spot{position:absolute;inset:0;z-index:2;opacity:0;transition:opacity 500ms ease;
+  background:radial-gradient(360px circle at var(--mx,70%) var(--my,50%),rgba(140,203,62,0.16),rgba(64,120,220,0.08) 45%,transparent 70%)}
+.hero.live .spot{opacity:1}
+.hero .wrap{position:relative;z-index:3;width:100%}
+.hero .copy{max-width:600px}
+.hero h1{font-size:clamp(42px,5vw,76px);font-weight:700;letter-spacing:-0.035em;line-height:0.95}
 .hero h1 .w{display:block}
 .hero h1 .w:nth-child(2){color:var(--green)}
-.hero .lead{margin-top:28px}
-.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
-.hero-art{position:relative}
-.hero-art img{width:100%;border-radius:28px;animation:float 7s ease-in-out infinite;will-change:transform}
-.hero-art .chip{position:absolute;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:16px;background:rgba(12,28,56,0.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px var(--edge);font-size:15px;font-weight:500;animation:float 6s ease-in-out infinite}
-.hero-art .chip i{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(140,203,62,0.25)}
-.hero-art .c1{left:2%;bottom:10%;animation-delay:-2s}
-.hero-art .c2{right:4%;top:6%;animation-delay:-4s}
-.hero-art .c2 i{background:var(--gold);box-shadow:0 0 0 4px rgba(235,185,35,0.25)}
+.hero .lead{margin-top:24px;max-width:540px;color:#C9D3E4}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.hero .chip{position:absolute;z-index:4;display:flex;align-items:center;gap:10px;padding:12px 16px;margin:0;border-radius:16px;background:rgba(12,28,56,0.72);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px var(--edge);font-size:15px;font-weight:500;white-space:nowrap;will-change:transform}
+.hero .chip i{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(140,203,62,0.25)}
+.hero .c1{left:18%;bottom:14%}
+.hero .c2{right:10%;top:12%}
+.hero .c2 i{background:var(--gold);box-shadow:0 0 0 4px rgba(235,185,35,0.25)}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-@media (max-width:880px){.hero .wrap{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:880px){
+  .hero{flex-direction:column;align-items:stretch;min-height:0;padding-bottom:0}
+  .hero-bg{position:relative;inset:auto;order:2;margin-top:-24px}
+  .hero-bg::after{background:linear-gradient(180deg,var(--bg) 0%,transparent 30%)}
+  .hero-bg .scene{position:relative;right:auto;top:auto;margin:0 0 0 -16%;width:132%}
+  .hero .c1{left:18%;bottom:12%}.hero .c2{right:18%;top:14%}
+}
 .in{animation:rise 800ms var(--ease) both}.in.d2{animation-delay:100ms}.in.d3{animation-delay:200ms}.in.d4{animation-delay:300ms}
 @keyframes rise{from{opacity:.001;transform:translateY(26px)}to{opacity:1;transform:none}}
 
@@ -230,11 +246,18 @@ dialog.det[open]{animation:pop 300ms var(--ease)}
 @media (max-width:880px){.contact .wrap{grid-template-columns:minmax(0,1fr)}.form .row{grid-template-columns:minmax(0,1fr)}}
 
 /* ===== Footer ===== */
-.foot{background:var(--bg2);padding-block:64px 40px}
-.foot .big{font:700 clamp(64px,14vw,210px)/0.85 var(--display);letter-spacing:-0.04em;color:var(--gold);margin:0}
-.foot .row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 32px;margin-top:36px;color:var(--muted);font-size:15px}
-.foot nav{display:flex;flex-wrap:wrap;gap:8px 22px}
-.foot nav a{color:var(--ink);text-decoration:none;padding:6px 0}
+.foot{background:var(--bg2);padding-block:64px 32px;font-size:15px}
+.foot .cols{display:grid;grid-template-columns:minmax(0,1.6fr) repeat(3,minmax(0,1fr));gap:32px 40px}
+.foot .cols > *{display:flex;flex-direction:column;gap:10px;min-width:0}
+.foot .brand .logo svg{height:40px;width:auto}
+.foot .brand p{color:var(--muted);max-width:340px;margin-top:6px}
+.foot h2{font:600 15px/1.2 var(--body);letter-spacing:0;color:var(--ink);margin-bottom:4px}
+.foot p{color:var(--muted)}
+.foot nav a,.foot .up{color:var(--muted);text-decoration:none;align-self:flex-start;transition:color 160ms ease,transform 200ms var(--ease)}
+@media (hover:hover){.foot nav a:hover,.foot .up:hover{color:var(--green);transform:translateX(3px)}}
+.foot .row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 32px;margin-top:48px;padding-top:24px;box-shadow:inset 0 1px 0 var(--edge);color:var(--muted)}
+@media (max-width:880px){.foot .cols{grid-template-columns:repeat(2,minmax(0,1fr))}.foot .brand{grid-column:1/-1}}
+@media (max-width:480px){.foot .cols{grid-template-columns:minmax(0,1fr)}}
 
 /* Entradas al hacer scroll: solo movimiento, el contenido siempre es visible */
 .rv{transition:transform 900ms var(--ease)}
@@ -249,10 +272,9 @@ dialog.det[open]{animation:pop 300ms var(--ease)}
 </style>
 </head>
 <body>
-
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="logo" viewBox="0 0 206 52">
+    <symbol id="logo" viewBox="0 0 222 52">
       <path d="M6 44 C12 30 15 10 22 10 C29 10 30 38 36 38 C42 38 44 6 51 6 C58 6 58 40 65 42 C71 44 77 26 86 15" stroke="#8CCB3E" stroke-width="6.5" stroke-linecap="round" fill="none"/>
       <rect x="17" y="0" width="8" height="4.5" fill="#EBB923"/><rect x="56" y="0" width="6" height="4" fill="#EBB923"/>
       <rect x="70" y="7" width="10" height="6.5" fill="#EBB923"/><rect x="0" y="29" width="7" height="4" fill="#EBB923"/>
@@ -264,7 +286,7 @@ dialog.det[open]{animation:pop 300ms var(--ease)}
 
 <header class="top" id="top">
   <div class="wrap">
-    <a class="logo" href="#inicio" aria-label="SimulNet, ir al inicio"><svg viewBox="0 0 206 52" aria-hidden="true"><use href="#logo"/></svg></a>
+    <a class="logo" href="#inicio" aria-label="SimulNet, ir al inicio"><svg viewBox="0 0 222 52" aria-hidden="true"><use href="#logo"/></svg></a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav" aria-label="Abrir menú">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
@@ -279,20 +301,24 @@ dialog.det[open]{animation:pop 300ms var(--ease)}
 </header>
 
 <main>
-<section class="hero glow" id="inicio">
+<section class="hero" id="inicio">
+  <div class="hero-bg" id="heroBg">
+    <div class="scene" id="scene" data-depth="1">
+      <img src="img/hero.webp" width="1400" height="764" alt="Ciudad tecnológica en miniatura con torres de telecomunicaciones, antena parabólica y un satélite en órbita, conectada por líneas de fibra óptica verdes" fetchpriority="high">
+      <p class="chip c1" data-depth="2.2"><i></i>Redes activas 24/7</p>
+      <p class="chip c2" data-depth="1.7"><i></i>Desde 2004</p>
+    </div>
+    <canvas id="net" aria-hidden="true"></canvas>
+    <div class="spot" aria-hidden="true"></div>
+  </div>
   <div class="wrap">
-    <div>
+    <div class="copy">
       <h1 class="in"><span class="w">Conecta.</span><span class="w">Protege.</span><span class="w">Avanza.</span></h1>
       <p class="lead in d2">Sistemas Simulnet diseña, instala y acompaña soluciones de telecomunicaciones, seguridad tecnológica e infraestructura crítica para empresas e instituciones de Venezuela y Latinoamérica desde 2004.</p>
       <div class="ctas in d3">
         <a class="btn btn-main pulse" href="#contacto">Hablemos de tu proyecto <span class="arr" aria-hidden="true">→</span></a>
         <a class="btn btn-glass" href="#servicios">Ver servicios</a>
       </div>
-    </div>
-    <div class="hero-art in d4" id="heroArt">
-      <img src="img/hero.webp" width="1400" height="764" alt="Ciudad tecnológica en miniatura con torres de telecomunicaciones, antena parabólica y un satélite en órbita, conectada por líneas de fibra óptica verdes" fetchpriority="high">
-      <p class="chip c1"><i></i>Redes activas 24/7</p>
-      <p class="chip c2"><i></i>Desde 2004</p>
     </div>
   </div>
 </section>
@@ -439,14 +465,33 @@ dialog.det[open]{animation:pop 300ms var(--ease)}
 
 <footer class="foot">
   <div class="wrap">
-    <p class="big" aria-hidden="true">SimulNet</p>
-    <div class="row">
-      <p>Sistemas Simulnet, C.A. · Innovación en ciencia y tecnología · © <span id="yr">2026</span></p>
+    <div class="cols">
+      <div class="brand">
+        <a class="logo" href="#inicio" aria-label="SimulNet, ir al inicio"><svg viewBox="0 0 222 52" aria-hidden="true"><use href="#logo"/></svg></a>
+        <p>Soluciones integrales en tecnologías de la información y comunicación para Venezuela y Latinoamérica.</p>
+      </div>
+      <nav aria-label="Secciones">
+        <h2>Explora</h2>
+        <a href="#servicios">Servicios</a>
+        <a href="#infraestructura">Infraestructura</a>
+        <a href="#formacion">Formación</a>
+        <a href="#nosotros">Nosotros</a>
+      </nav>
+      <div>
+        <h2>Contacto</h2>
+        <p>+58 (212) 715 7186</p>
+        <p>info@simulnet.com</p>
+        <p>Torre La Noria, piso 2, ofic. 215, Las Mercedes, Caracas</p>
+      </div>
       <nav aria-label="Redes sociales">
+        <h2>Síguenos</h2>
         <a href="https://www.instagram.com/simulnet/" target="_blank" rel="noopener">Instagram</a>
         <a href="https://www.facebook.com/SistemasSimulnet/" target="_blank" rel="noopener">Facebook</a>
-        <a href="#inicio">Volver arriba ↑</a>
       </nav>
+    </div>
+    <div class="row">
+      <p>© <span id="yr">2026</span> Sistemas Simulnet, C.A. · Innovación en ciencia y tecnología</p>
+      <a class="up" href="#inicio">Volver arriba ↑</a>
     </div>
   </div>
 </footer>
@@ -522,13 +567,45 @@ dialog.det[open]{animation:pop 300ms var(--ease)}
     document.querySelectorAll('[data-count]').forEach(function(el){co.observe(el)});
   }
 
-  // Parallax suave del hero con el mouse
-  var art=document.getElementById('heroArt');
-  if(!reduce&&matchMedia('(hover:hover) and (pointer:fine)').matches){
-    art.addEventListener('pointermove',function(e){var r=art.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;art.style.transform='perspective(900px) rotateY('+(x*6)+'deg) rotateX('+(-y*6)+'deg)'});
-    art.addEventListener('pointerleave',function(){art.style.transform=''});
-    art.style.transition='transform 400ms cubic-bezier(0.23,1,0.32,1)';
-  }
+  // Hero: parallax en capas + foco de luz + red de partículas que reacciona al mouse
+  (function(){
+    var hero=document.getElementById('inicio'), scene=document.getElementById('scene'),
+        chips=[].slice.call(scene.querySelectorAll('[data-depth]')), cv=document.getElementById('net'),
+        ctx=cv.getContext('2d'), fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+    var tx=0,ty=0,cx=0,cy=0,mx=-999,my=-999,inside=false,W=0,H=0,dpr=Math.min(2,devicePixelRatio||1),pts=[];
+    function size(){var r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+      var n=Math.round(Math.min(70,W*H/16000));pts=[];for(var i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.6+.6,g:Math.random()<.18})}
+    size();addEventListener('resize',size);
+    if(fine&&!reduce){
+      hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;tx=mx/r.width-.5;ty=my/r.height-.5;inside=true;
+        hero.style.setProperty('--mx',mx+'px');hero.style.setProperty('--my',my+'px');hero.classList.add('live')});
+      hero.addEventListener('pointerleave',function(){tx=0;ty=0;inside=false;mx=my=-999;hero.classList.remove('live')});
+    }
+    var visible=true;
+    if('IntersectionObserver' in window)new IntersectionObserver(function(es){visible=es[0].isIntersecting}).observe(hero);
+    function frame(){
+      if(!reduce)requestAnimationFrame(frame);
+      if(!visible)return;
+      // resorte suave: la escena sigue al mouse con inercia
+      cx+=(tx-cx)*.07;cy+=(ty-cy)*.07;
+      scene.style.transform='perspective(1200px) translate3d('+(-cx*28)+'px,'+(-cy*20)+'px,0) rotateY('+(cx*5)+'deg) rotateX('+(-cy*4)+'deg)';
+      chips.forEach(function(c){var d=+c.dataset.depth;c.style.transform='translate3d('+(cx*22*d)+'px,'+(cy*16*d)+'px,0)'});
+      ctx.clearRect(0,0,W,H);
+      for(var i=0;i<pts.length;i++){var p=pts[i];
+        if(!reduce){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1}
+        var dx=p.x-mx,dy=p.y-my,d=Math.sqrt(dx*dx+dy*dy);
+        if(inside&&d<150){ // el cursor empuja y enciende los nodos cercanos
+          var f=(150-d)/150;p.x+=dx/d*f*1.2;p.y+=dy/d*f*1.2;
+          ctx.strokeStyle='rgba(140,203,62,'+(f*.55)+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(mx,my);ctx.lineTo(p.x,p.y);ctx.stroke();
+        }
+        for(var j=i+1;j<pts.length;j++){var q=pts[j],ex=p.x-q.x,ey=p.y-q.y,e=ex*ex+ey*ey;
+          if(e<9000){ctx.strokeStyle='rgba(120,160,230,'+(0.14*(1-e/9000))+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke()}}
+        ctx.fillStyle=p.g?'rgba(235,185,35,.8)':(inside&&d<150?'rgba(140,203,62,.95)':'rgba(170,195,235,.55)');
+        ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill();
+      }
+    }
+    requestAnimationFrame(frame);
+  })();
 
   // Copiar teléfono / correo
   var note=document.getElementById('note');
